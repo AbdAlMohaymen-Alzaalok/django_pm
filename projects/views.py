@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView
-from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView,UpdateView,DeleteView
+from django.urls import reverse_lazy, reverse
 from . import models
 from . import forms
 
@@ -13,3 +13,31 @@ class ProjectCreateView(CreateView):
     form_class = forms.ProjectCreateForm
     template_name = 'Project/create.html'
     success_url = reverse_lazy('Project_list')
+class ProjectUpdateView(UpdateView):
+    model=models.Project
+    form_class = forms.ProjectCreateForm
+    template_name = 'Project/update.html'
+    success_url = reverse_lazy('Project_list')
+    def get_success_url(self):
+        return reverse('Project_update',args=[self.object.project.id])
+class ProjectDeleteView(DeleteView):
+    model = models.Project
+    template_name = 'project/delete.html'
+    success_url = reverse_lazy('Project_list')
+class TaskCreateView(CreateView):
+    model = models.Task
+    fields = ['project','description']
+    http_method_names = ['post']
+    def get_success_url(self):
+        return reverse('Project_update', args=[self.object.project.id])
+class TaskUpdateView(UpdateView):
+    model = models.Task
+    fields = ['is_complated']
+    http_method_names = ['post']
+    def get_success_url(self):
+        return reverse('Project_update', args=[self.object.project.id])
+class TaskDeleteView(DeleteView):
+    model = models.Task
+    def get_success_url(self):
+        return reverse('Project_update', args=[self.object.project.id])
+
