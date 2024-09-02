@@ -1,5 +1,6 @@
 from django import forms
 from . import  models
+
 attrs={'class':'form-control'}
 class ProjectCreateForm(forms.ModelForm):
     class Meta:
@@ -11,6 +12,7 @@ class ProjectCreateForm(forms.ModelForm):
             'description':forms.Textarea(attrs=attrs)
         }
 class ProjectUpdateForm(forms.ModelForm):
+    password=None
     class Meta:
         model=models.Project
         fields=['category','title','status']
